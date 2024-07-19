@@ -15,24 +15,46 @@ template_func(half); \
 template_func(float);
 
 // TODO: ucomment ulong
-#define TEST_TEMPLATE__ATOMIC_SCALARS(template_func) \
+#define TEST_TEMPLATE__ATOMIC_SCALARS_NO_FP(template_func) \
 template_func(int); \
 template_func(uint); \
-/*template_func(ulong);*/ \
+/*template_func(ulong);*/
+
+#define TEST_TEMPLATE__ATOMIC_SCALARS(template_func) \
+TEST_TEMPLATE__ATOMIC_SCALARS_NO_FP(template_func) \
 template_func(float);
 
 void testAtomic(float f32) {
-#define ATOMIC_STORE_EXPLICIT(addrspace, mem_scope, type) __metal_atomic_store_explicit((addrspace type*)nullptr, type(0), int(0), mem_scope)
-#define ATOMIC_STORE_EXPLICIT__THREADGROUP(type) ATOMIC_STORE_EXPLICIT(threadgroup, __METAL_MEMORY_SCOPE_THREADGROUP__, type)
-#define ATOMIC_STORE_EXPLICIT__DEVICE(type) ATOMIC_STORE_EXPLICIT(device, __METAL_MEMORY_SCOPE_DEVICE__, type)
-    // TODO: uncomment
-    //TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_STORE_EXPLICIT__THREADGROUP)
-    TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_STORE_EXPLICIT__DEVICE);
+#define ATOMIC_STORE_EXPLICIT(type) __metal_atomic_store_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_STORE_EXPLICIT);
 
-#define ATOMIC_LOAD_EXPLICIT(addrspace, mem_scope, type) __metal_atomic_load_explicit((addrspace type*)nullptr, int(0), mem_scope)
-#define ATOMIC_LOAD_EXPLICIT__THREADGROUP(type) ATOMIC_LOAD_EXPLICIT(threadgroup, __METAL_MEMORY_SCOPE_THREADGROUP__, type)
-#define ATOMIC_LOAD_EXPLICIT__DEVICE(type) ATOMIC_LOAD_EXPLICIT(device, __METAL_MEMORY_SCOPE_DEVICE__, type)
-    // TODO: uncomment
-    //TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_LOAD_EXPLICIT__THREADGROUP)
-    TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_LOAD_EXPLICIT__DEVICE);
+#define ATOMIC_LOAD_EXPLICIT(type) __metal_atomic_load_explicit((device type*)nullptr, int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_LOAD_EXPLICIT);
+
+#define ATOMIC_EXCHANGE_EXPLICIT(type) __metal_atomic_exchange_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_EXCHANGE_EXPLICIT);
+
+#define ATOMIC_COMPARE_EXCHANGE_WEAK_EXPLICIT(type) __metal_atomic_compare_exchange_weak_explicit((device type*)nullptr, (thread type*)nullptr, type(0), int(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_COMPARE_EXCHANGE_WEAK_EXPLICIT);
+
+#define ATOMIC_FETCH_ADD_EXPLICIT(type) __metal_atomic_fetch_add_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_FETCH_ADD_EXPLICIT);
+
+#define ATOMIC_FETCH_AND_EXPLICIT(type) __metal_atomic_fetch_and_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS_NO_FP(ATOMIC_FETCH_AND_EXPLICIT);
+
+#define ATOMIC_FETCH_MAX_EXPLICIT(type) __metal_atomic_fetch_max_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS_NO_FP(ATOMIC_FETCH_MAX_EXPLICIT);
+
+#define ATOMIC_FETCH_MIN_EXPLICIT(type) __metal_atomic_fetch_min_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS_NO_FP(ATOMIC_FETCH_MIN_EXPLICIT);
+
+#define ATOMIC_FETCH_OR_EXPLICIT(type) __metal_atomic_fetch_or_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS_NO_FP(ATOMIC_FETCH_OR_EXPLICIT);
+
+#define ATOMIC_FETCH_SUB_EXPLICIT(type) __metal_atomic_fetch_sub_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS(ATOMIC_FETCH_SUB_EXPLICIT);
+
+#define ATOMIC_FETCH_XOR_EXPLICIT(type) __metal_atomic_fetch_xor_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
+    TEST_TEMPLATE__ATOMIC_SCALARS_NO_FP(ATOMIC_FETCH_XOR_EXPLICIT);
 }

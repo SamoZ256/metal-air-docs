@@ -150,9 +150,9 @@ Every function in the standard library is prefixed with `air.`. The Metal shadin
 
 TODO: talk about the AIR functions having i1 argument at the end, while the Metal builtins don't have it.
 
-The standard library functions are usually templated, so there are many possible permutations of the same function. Therefore, this document will list the functions in a more general way and provide all possible template types.
+The standard library functions are usually templated, so there are many possible permutations of the same function. Therefore, this document will list the functions in a more general way and provide all possible template types. Many functions will have `<T.signedness>`, which means that if `T` is an integer, it will be either `s` or `u` depending on the signedness of the integer. Otherwise, it will be omitted (together with the `.` before it).
 
-Because the standard library is huge, it is broken down into several sections.
+Because the standard library is huge, this section is broken down into several sections.
 
 #### Atomic
 
@@ -160,8 +160,17 @@ TODO
 
 | AIR standard library function | Description | Arguments | Valid template types |
 | ----------------------------- | ----------- | --------- | -------------------- |
-| void @air.atomic.global.store.<T>(ptr addrspace(1) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
-| T @air.atomic.global.load.<T>(ptr addrspace(1) nocapture, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
+| void @air.atomic.global.store.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.load.<T>(ptr addrspace(X) nocapture, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.xchg.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.cmpxchg.weak.<T>(ptr addrspace(X) nocapture, ptr nocapture, T, i32, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.add.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.and.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.max.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.min.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.or.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.sub.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.xor.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) |
 
 <a name="conversion_functions"></a>
 Conversion functions:
