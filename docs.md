@@ -146,7 +146,22 @@ Adress spaces:
 
 ### AIR standard library
 
+Every function in the standard library is prefixed with `air.`. The Metal shading language compiler supports calls to these functions by builtins, but the builtins are prefixed with `__metal_` instead. For instance, the `air.discard_fragment` function is equivalent to the `__metal_discard_fragment` builtin in Metal shading language, which in turn is called by the `discard_fragment` function that is meant to be used by programmers. However, it's not always named like this. For instance, `air.atomic.global.store` is called `__metal_atomic_store_explicit` in Metal shading language.
+
+TODO: talk about the AIR functions having i1 argument at the end, while the Metal builtins don't have it.
+
+The standard library functions are usually templated, so there are many possible permutations of the same function. Therefore, this document will list the functions in a more general way and provide all possible template types.
+
+Because the standard library is huge, it is broken down into several sections.
+
+#### Atomic
+
 TODO
+
+| AIR standard library function | Description | Arguments | Valid template types |
+| ----------------------------- | ----------- | --------- | -------------------- |
+| void @air.atomic.global.store.<T>(ptr addrspace(1) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
+| T @air.atomic.global.load.<T>(ptr addrspace(1) nocapture, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) |
 
 <a name="conversion_functions"></a>
 Conversion functions:

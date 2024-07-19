@@ -1,6 +1,7 @@
 #include <metal_stdlib>
 using namespace metal;
 
+// TODO: bool, int64_t and uint64_t
 void test() {
     int8_t i8 = 0;
     int16_t i16 = 0;
