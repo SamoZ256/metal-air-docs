@@ -159,30 +159,30 @@ Because the standard library is huge, this section is broken down into several s
 TODO
 
 | AIR standard library function | Description | Arguments | Valid template types | Valid address spaces |
-| ----------------------------- | ----------- | --------- | -------------------- |
-| void @air.atomic.global.store.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.load.<T>(ptr addrspace(X) nocapture, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.xchg.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.cmpxchg.weak.<T>(ptr addrspace(X) nocapture, ptr nocapture, T, i32, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.add.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.and.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.max.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.min.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.or.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.sub.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
-| T @air.atomic.global.xor.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1) | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| ----------------------------- | ----------- | --------- | -------------------- | -------------------- |
+| `void @air.atomic.global.store.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.load.<T>(ptr addrspace(X) nocapture, i32, i32, i1)` | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.xchg.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.cmpxchg.weak.<T>(ptr addrspace(X) nocapture, ptr nocapture, T, i32, i32, i32, i1)` | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.add.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.and.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.max.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.min.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.or.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.sub.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32`, `f32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
+| `T @air.atomic.global.xor.<T.signedness>.<T>(ptr addrspace(X) nocapture, T, i32, i32, i1)` | TODO | TODO | `i32` (TODO: can it be `i64` as well?) | `device` or `threadgroup` |
 
 #### Command buffer
 
-| AIR standard library function | Description | Arguments | Valid template types | | Valid address spaces |
-| ----------------------------- | ----------- | --------- | -------------------- |
-| i32 @air.get_size_command_buffer(ptr addrspace(X) nocapture readonly) | TODO | TODO | none | any |
-| void @air.set_pipeline_state_compute_command(ptr addrspace(X) nocapture, i32, ptr addrspace(X) readonly) | TODO | TODO | none | any |
-| void @air.set_kernel_buffer_compute_command.p1i8(ptr addrspace(X1) nocapture, i32, ptr addrspace(X2), i64, i32) | TODO | TODO | none | `X1`: any, `X2`: `device` or `constant` |
-| void @air.concurrent_dispatch_threadgroups_compute_command(ptr addrspace(X) nocapture, i32, <3 x i32>, <3 x i32>) | TODO | TODO | none | any |
-| void @air.concurrent_dispatch_threads_compute_command(ptr addrspace(X) nocapture, i32, <3 x i32>, <3 x i32>) | TODO | TODO | none | any |
-| void @air.set_barrier_compute_command(ptr addrspace(X) nocapture, i32) | TODO | TODO | none | any |
-| void @air.clear_barrier_compute_command(ptr addrspace(X) nocapture, i32) | TODO | TODO | none | any |
+| AIR standard library function | Description | Arguments | Valid template types | Valid address spaces |
+| ----------------------------- | ----------- | --------- | -------------------- | -------------------- |
+| `i32 @air.get_size_command_buffer(ptr addrspace(X) nocapture readonly)` | TODO | TODO | none | any |
+| `void @air.set_pipeline_state_compute_command(ptr addrspace(X) nocapture, i32, ptr addrspace(X) readonly)` | TODO | TODO | none | any |
+| `void @air.set_kernel_buffer_compute_command.p1i8(ptr addrspace(X1) nocapture, i32, ptr addrspace(X2), i64, i32)` | TODO | TODO | none | `X1`: any, `X2`: `device` or `constant` |
+| `void @air.concurrent_dispatch_threadgroups_compute_command(ptr addrspace(X) nocapture, i32, <3 x i32>, <3 x i32>)` | TODO | TODO | none | any |
+| `void @air.concurrent_dispatch_threads_compute_command(ptr addrspace(X) nocapture, i32, <3 x i32>, <3 x i32>)` | TODO | TODO | none | any |
+| `void @air.set_barrier_compute_command(ptr addrspace(X) nocapture, i32)` | TODO | TODO | none | any |
+| `void @air.clear_barrier_compute_command(ptr addrspace(X) nocapture, i32)` | TODO | TODO | none | any |
 
 TODO: add the rest of the standard library functions
 
