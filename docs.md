@@ -116,7 +116,7 @@ This document will go over 3 main parts of the shader code:
 ## The header
 
 The header header is rather simple. It contains the following information:
-- Source filename - contains the path to the source file. Used just for debugging purposes, therefore can be safely omitted.
+- (debug) Source filename - contains the path to the source file.
 - Data layout - TODO
 - Target triple - this is a typical LLVM target triple. The format is `<arch>-<vendor>-<system>`. The architecture is always `air64` and the vendor is always `apple`. The system is the operating system the shader is compiled for and it includes version as well. The table of possible values is below:
   | System | Description |
@@ -148,7 +148,7 @@ Adress spaces:
 
 Every function in the standard library is prefixed with `air.`. The Metal shading language compiler supports calls to these functions by builtins, but the builtins are prefixed with `__metal_` instead. For instance, the `air.discard_fragment` function is equivalent to the `__metal_discard_fragment` builtin in Metal shading language, which in turn is called by the `discard_fragment` function that is meant to be used by programmers. However, it's not always named like this. For instance, `air.atomic.global.store` is called `__metal_atomic_store_explicit` in Metal shading language.
 
-TODO: talk about the AIR functions having i1 argument at the end, while the Metal builtins don't have it.
+TODO: write about the AIR functions having i1 argument at the end, while the Metal builtins don't have it.
 
 The standard library functions are usually templated, so there are many possible permutations of the same function. Therefore, this document will list the functions in a more general way and provide all possible template types. Many functions will have `<T.signedness>`, which means that if `T` is an integer, it will be either `s` or `u` depending on the signedness of the integer. Otherwise, it will be omitted (together with the `.` before it).
 
@@ -239,4 +239,85 @@ TODO: add the rest of the standard library functions
 
 ## The metadata
 
+The metadata is the bottom part of the AIR file. It contains the following information:
+- LLVM module flags (`llvm.module.flags`) - An array of [module flags](#module_flags).
+- (optional) Vertex functions (`air.vertex`) - An array of [vertex functions](#vertex_functions).
+- (optional) Fragment functions (`air.fragment`) - An array of [fragment functions](#fragment_functions).
+- (optional) Kernerl functions (`air.kernel`) - An array of [kernel functions](#kernel_functions).
+- (optional) Mesh functions (`air.mesh`) - An array of [mesh #mesh_functions](#mesh_functions).
+- (optional) Object functions (`air.object`) - An array of [object functions](#object_functions).
+- Compile options (`air.compile_options`) - An array of [compile options](#compile_options).
+- LLVM identifier (`llvm.ident`) - A string identifying the Metal compiler. See [below](#llvm_identifier).
+- AIR version (`air.version`) - A 3 element array containing the major, minor and patch version of the AIR file format.
+- Source language (`air.language_version`) - A 4 element array containing the name of the source language and the major, minor and patch version of the source language.
+- Source filename (`air.source_file_name`) - The path to the source file.
+
+<a name="module_flags"></a>
 TODO
+
+### Entry points
+
+The entry points are the functions that are called by the Metal API. In the context of the AIR metadata, an entry point is an array containing the following information:
+- The function pointer to be called by the Metal API.
+- An array of outputs (except for `kernel` entry points) - stage-specific
+- An array of inputs - These contain the stage-specific inputs as well as the general inputs that are described [below](#general_inputs).
+
+Each input and output can have both positional and named arguments. Positional arguments always go before named arguments. Named arguments are specified as 2 arguments with the first one being the name of the argument and the second one being the value of the argument. Each argument can have the following 2 named arguments:
+
+| Argument | Type | Possible values | Description | Mandatory |
+| -------- | ---- | --------------- | ----------- | --------- |
+| `air.arg_type_name` | `str` | any | The name of the type of the argument. | no (debug) |
+| `air.arg_name` | `str` | any | The name of the argument. | no (debug) |
+
+Additionally, every input must have the following positional arguments:
+| Argument | Type | Possible values | Description | Mandatory |
+| -------- | ---- | --------------- | ----------- | --------- |
+| `0` | `i32` | any | The index of the input in the function signature. | yes |
+
+Since the 0th positional argument is mandatory for every input, it won't be mentioned in this document more.
+
+<a name="general_inputs"></a>
+#### General inputs
+
+TODO
+
+<a name="vertex_functions"></a>
+#### Vertex functions
+
+TODO
+
+TODO: write about void vertex functions
+
+##### Inputs
+TODO
+
+##### Outputs
+| Argument | Type | Possible values | Description | Mandatory |
+| -------- | ---- | --------------- | ----------- | --------- |
+| `0` | `str` | `air.position`, `air.vertex_output` | Indicates wether the output is builtin position or user defined. | yes |
+| `1` | `str` | any (TODO: can this really be anything?) | The string used to match the vertex output with the corresponding fragment input. | yes (but forbidden in case argument `0` is `air.position`) |
+
+<a name="fragment_functions"></a>
+#### Fragment functions
+
+TODO
+
+<a name="kernel_functions"></a>
+#### Kernel functions
+
+TODO
+
+<a name="mesh_functions"></a>
+#### Mesh functions
+
+TODO
+
+<a name="object_functions"></a>
+#### Object functions
+
+TODO
+
+<a name="compile_options"></a>
+TODO
+
+<a name="llvm_identifier"></a>
