@@ -244,7 +244,7 @@ The metadata is the bottom part of the AIR file. It contains the following infor
 - (optional) Vertex functions (`air.vertex`) - An array of [vertex functions](#vertex_functions).
 - (optional) Fragment functions (`air.fragment`) - An array of [fragment functions](#fragment_functions).
 - (optional) Kernerl functions (`air.kernel`) - An array of [kernel functions](#kernel_functions).
-- (optional) Mesh functions (`air.mesh`) - An array of [mesh #mesh_functions](#mesh_functions).
+- (optional) Mesh functions (`air.mesh`) - An array of [mesh](#mesh_functions).
 - (optional) Object functions (`air.object`) - An array of [object functions](#object_functions).
 - Compile options (`air.compile_options`) - An array of [compile options](#compile_options).
 - LLVM identifier (`llvm.ident`) - A string identifying the Metal compiler. See [below](#llvm_identifier).
