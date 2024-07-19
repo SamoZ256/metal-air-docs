@@ -1,16 +1,22 @@
 #include <metal_stdlib>
 using namespace metal;
 
+#define TEST_TEMPLATE__INDEX_TYPES(template_func) \
+template_func(uint16_t); \
+template_func(uint32_t);
+
+#define TEST_TEMPLATE__UINTS(template_func) \
+template_func(uint8_t); \
+TEST_TEMPLATE__INDEX_TYPES(template_func) \
+template_func(uint64_t);
+
 #define TEST_TEMPLATE__SCALARS(template_func) \
 template_func(bool); \
 template_func(int8_t); \
 template_func(int16_t); \
 template_func(int32_t); \
 template_func(int64_t); \
-template_func(uint8_t); \
-template_func(uint16_t); \
-template_func(uint32_t); \
-template_func(uint64_t); \
+TEST_TEMPLATE__UINTS(template_func) \
 template_func(half); \
 template_func(float);
 
@@ -62,18 +68,41 @@ void testAtomic(float f32) {
 void testCommandBuffer() {
     __metal_command_buffer_t commandBuffer;
     __metal_compute_pipeline_state_t computePipelineState;
+    __metal_render_pipeline_state_t renderPipelineState;
 
     __metal_get_size_command_buffer(commandBuffer);
 
+    // Compute
     __metal_set_pipeline_state_compute_command(commandBuffer, 0, computePipelineState);
-
     __metal_set_kernel_buffer_compute_command(commandBuffer, 0, (device void*)nullptr, 0, 0);
-
     __metal_concurrent_dispatch_threadgroups_compute_command(commandBuffer, 0, uint3(0), uint3(0));
-
     __metal_concurrent_dispatch_threads_compute_command(commandBuffer, 0, uint3(0), uint3(0));
-
     __metal_set_barrier_compute_command(commandBuffer, 0);
-
     __metal_clear_barrier_compute_command(commandBuffer, 0);
+    __metal_set_stage_in_region_compute_command(commandBuffer, 0, uint3(0), uint3(0));
+    __metal_set_threadgroup_memory_length_compute_command(commandBuffer, 0, 0, 0);
+    __metal_set_imageblock_size_compute_command(commandBuffer, 0, ushort2(0));
+    __metal_reset_compute_command(commandBuffer, 0);
+    __metal_copy_compute_command(commandBuffer, 0, commandBuffer, 0);
+
+    // Render
+    __metal_set_pipeline_state_render_command(commandBuffer, 0, renderPipelineState);
+    __metal_set_vertex_buffer_render_command(commandBuffer, 0, (device void*)nullptr, 0, 0);
+    __metal_set_fragment_buffer_render_command(commandBuffer, 0, (device void*)nullptr, 0);
+    __metal_set_object_buffer_render_command(commandBuffer, 0, (device void*)nullptr, 0);
+    __metal_set_object_threadgroup_memory_length_render_command(commandBuffer, 0, 0, 0);
+    __metal_set_mesh_buffer_render_command(commandBuffer, 0, (device void*)nullptr, 0);
+    __metal_draw_primitives_render_command(commandBuffer, 0, 0, 0, 0, 0, 0);
+
+#define DRAW_INDEXED_PRIMITIVES_RENDER_COMMAND(type) __metal_draw_indexed_primitives_render_command(commandBuffer, 0, 0, 0, (device type*)nullptr, 0, 0, 0)
+    TEST_TEMPLATE__INDEX_TYPES(DRAW_INDEXED_PRIMITIVES_RENDER_COMMAND);
+
+    __metal_draw_patches_render_command(commandBuffer, 0, 0, 0, 0, (device uint*)nullptr, 0, 0, (device void*)nullptr, 0, 0.0f);
+    __metal_draw_indexed_patches_render_command(commandBuffer, 0, 0, 0, 0, (device uint*)nullptr, (device void*)nullptr, 0, 0, (device void*)nullptr, 0, 0.0f);
+    __metal_draw_mesh_threadgroups_render_command(commandBuffer, 0, uint3(0), uint3(0), uint3(0));
+    __metal_draw_mesh_threads_render_command(commandBuffer, 0, uint3(0), uint3(0), uint3(0));
+    __metal_set_barrier_render_command(commandBuffer, 0);
+    __metal_clear_barrier_render_command(commandBuffer, 0);
+    __metal_reset_render_command(commandBuffer, 0);
+    __metal_copy_render_command(commandBuffer, 0, commandBuffer, 0);
 }

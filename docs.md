@@ -174,7 +174,7 @@ TODO
 
 #### Command buffer
 
-| AIR standard library function | Description | Arguments | Valid template types | Valid address spaces |
+| AIR standard library function | Metal API equivalent | Arguments | Valid template types | Valid address spaces |
 | ----------------------------- | ----------- | --------- | -------------------- | -------------------- |
 | `i32 @air.get_size_command_buffer(ptr addrspace(X) nocapture readonly)` | TODO | TODO | none | any |
 | `void @air.set_pipeline_state_compute_command(ptr addrspace(X) nocapture, i32, ptr addrspace(X) readonly)` | TODO | TODO | none | any |
@@ -183,6 +183,27 @@ TODO
 | `void @air.concurrent_dispatch_threads_compute_command(ptr addrspace(X) nocapture, i32, <3 x i32>, <3 x i32>)` | TODO | TODO | none | any |
 | `void @air.set_barrier_compute_command(ptr addrspace(X) nocapture, i32)` | TODO | TODO | none | any |
 | `void @air.clear_barrier_compute_command(ptr addrspace(X) nocapture, i32)` | TODO | TODO | none | any |
+| `void @air.set_stage_in_region_compute_command(ptr addrspace(X) nocapture, i32, <3 x i32>, <3 x i32>)` | TODO | TODO | none | any |
+| `void @air.set_threadgroup_memory_length_compute_command(ptr addrspace(X) nocapture, i32, i32, i32)` | TODO | TODO | none | any |
+| `void @air.set_imageblock_size_compute_command(ptr addrspace(X) nocapture, i32, <2 x i16>)` | TODO | TODO | none | any |
+| `void @air.reset_compute_command(ptr addrspace(X) nocapture, i32)` | TODO | TODO | none | any |
+| `void @air.copy_compute_command(ptr addrspace(X) nocapture, i32, ptr addrspace(X) nocapture readonly, i32)` | TODO | TODO | none | any |
+| `void @air.set_pipeline_state_render_command(ptr addrspace(X) nocapture, i32, ptr addrspace(X) readonly)` | TODO | TODO | none | any |
+| `void @air.set_vertex_buffer_render_command.p1i8(ptr addrspace(X1) nocapture, i32, ptr addrspace(X2), i64, i32)` | TODO | TODO | none | `X1`: any, `X2`: `device` or `constant` |
+| `void @air.set_fragment_buffer_render_command.p1i8(ptr addrspace(X1) nocapture, i32, ptr addrspace(X2), i32)` | TODO | TODO | none | `X1`: any, `X2`: `device` or `constant` |
+| `void @air.set_object_buffer_render_command.p1i8(ptr addrspace(X1) nocapture, i32, ptr addrspace(X2), i32)` | TODO | TODO | none | `X1`: any, `X2`: `device` or `constant` |
+| `void @air.set_object_threadgroup_memory_length_render_command(ptr addrspaceX1) nocapture, i32, i32, i32)` | TODO | TODO | none | any |
+| `void @air.set_mesh_buffer_render_command.p1i8(ptr addrspace(X1) nocapture, i32, ptr addrspace(X2), i32)` | TODO | TODO | none | `X1`: any, `X2`: `device` or `constant` |
+| `void @air.draw_primitives_render_command(ptr addrspace(X) nocapture, i32, i32, i32, i32, i32, i32)` | TODO | TODO | none | any |
+| `void @air.draw_indexed_primitives_render_command.p1<T>(ptr addrspace(X1) nocapture, i32, i32, i32, ptr addrspace(X2), i32, i32, i32)` | TODO | TODO | `i16` or `i32` | `X1`: any, `X2`: `device` or `constant` |
+| `void @air.draw_patches_render_command.p1i32.p1i8(ptr addrspace(X1) nocapture, i32, i32, i32, i32, ptr addrspace(X2), i32, i32, ptr addrspace(X2), i32, float)` | TODO | TODO | none | `X1`: any, `X2`: `device` or `constant` |
+| `void @air.draw_indexed_patches_render_command.p1i32.p1i8.p1i8(ptr addrspace(X1) nocapture, i32, i32, i32, i32, ptr addrspace(x2), ptr addrspace(x2), i32, i32, ptr addrspace(x2), i32, float)` | TODO | TODO | none | `X1`: any, `X2`: `device` or `constant` |
+| `void @air.draw_mesh_threadgroups_render_command(ptr addrspace(X) nocapture, i32, <3 x i32>, <3 x i32>, <3 x i32>)` | TODO | TODO | none | any |
+| `void @air.draw_mesh_threads_render_command(ptr addrspace(X) nocapture, i32, <3 x i32>, <3 x i32>, <3 x i32>)` | TODO | TODO | none | any |
+| `void @air.set_barrier_render_command(ptr addrspace(X) nocapture, i32)` | TODO | TODO | none | any |
+| `void @air.clear_barrier_render_command(ptr addrspace(X) nocapture, i32)` | TODO | TODO | none | any |
+| `void @air.reset_render_command(ptr addrspace(X) nocapture, i32)` | TODO | TODO | none | any |
+| `void @air.copy_render_command(ptr addrspace(1) nocapture, i32, ptr addrspace(1) nocapture readonly, i32)` | TODO | TODO | none | any |
 
 TODO: add the rest of the standard library functions
 
