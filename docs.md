@@ -128,4 +128,56 @@ The header header is rather simple. It contains the following information:
 
 ## The body
 
-The body is the main part of the shader. It contains the actual shader code. It uses LLVM 4.0.
+The body is the main part of the shader. It contains the actual shader code. It uses LLVM 4.0. However, there are some slight differences to the regular LLVM IR. The main differences are:
+- Pointers can be qualified with `addrspace(X)`. Specifying no address space is the equivalent of `thread` address space in Metal shading language. The table for valid address spaces can be found below.
+- Cast instructions that convert to or from integers and floating-point numbers (i.e. `sitofp`, `fptoui`) are not allowed (TODO: check this). Instead, AIR uses conversion functions from the AIR standard library. The table for valid conversion functions can be found in the [standard library functions](#conversion_functions) section. Extend and truncate instructions like `trunc` and `zext` are supported.
+
+Adress spaces:
+
+| Address space | Description |
+|---------------|-------------|
+| 1 | device |
+| 2 | constant |
+| 3 | threadgroup |
+| 4 | threadgroup_imageblock |
+| 5 | ray_data |
+| 6 | object_data |
+| none | thread |
+
+### AIR standard library
+
+TODO
+
+<a name="conversion_functions"></a>
+Conversion functions:
+
+| AIR standard library function | LLVM equivalent |
+| ----------------------------- | --------------- |
+| i8 @air.convert.s.i8.f.f16(half) | fptosi |
+| i8 @air.convert.s.i8.f.f32(float) | fptosi |
+| i16 @air.convert.s.i16.f.f16(half) | fptosi |
+| i16 @air.convert.s.i16.f.f32(float) | fptosi |
+| i32 @air.convert.s.i32.f.f16(half) | fptosi |
+| i32 @air.convert.s.i32.f.f32(float) | fptosi |
+| u8 @air.convert.u.u8.f.f16(half) | fptoui |
+| u8 @air.convert.u.u8.f.f32(float) | fptoui |
+| u16 @air.convert.u.u16.f.f16(half) | fptoui |
+| u16 @air.convert.u.u16.f.f32(float) | fptoui |
+| u32 @air.convert.u.u32.f.f16(half) | fptoui |
+| u32 @air.convert.u.u32.f.f32(float) | fptoui |
+| half @air.convert.f.f16.s.i8(i8) | sitofp |
+| half @air.convert.f.f16.s.i16(i8) | sitofp |
+| half @air.convert.f.f16.s.i32(i8) | sitofp |
+| half @air.convert.f.f16.u.u8(i8) | uitofp |
+| half @air.convert.f.f16.u.u16(i8) | uitofp |
+| half @air.convert.f.f16.u.u32(i8) | uitofp |
+| float @air.convert.f.f32.s.i8(i8) | sitofp |
+| float @air.convert.f.f32.s.i16(i8) | sitofp |
+| float @air.convert.f.f32.s.i32(i8) | sitofp |
+| float @air.convert.f.f32.u.u8(i8) | uitofp |
+| float @air.convert.f.f32.u.u16(i8) | uitofp |
+| float @air.convert.f.f32.u.u32(i8) | uitofp |
+
+## The metadata
+
+TODO

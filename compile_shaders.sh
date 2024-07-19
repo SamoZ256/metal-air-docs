@@ -1,5 +1,5 @@
 function compileShaderForSystem {
-    xcrun -sdk $2 metal -o shaders/$2/$1.ir -c shaders/$1.metal
+    xcrun -sdk $2 metal -O0 -o shaders/$2/$1.ir -c shaders/$1.metal
     llvm-dis shaders/$2/$1.ir -o shaders/$2/$1.ll
 }
 
