@@ -58,3 +58,22 @@ void testAtomic(float f32) {
 #define ATOMIC_FETCH_XOR_EXPLICIT(type) __metal_atomic_fetch_xor_explicit((device type*)nullptr, type(0), int(0), __METAL_MEMORY_SCOPE_DEVICE__)
     TEST_TEMPLATE__ATOMIC_SCALARS_NO_FP(ATOMIC_FETCH_XOR_EXPLICIT);
 }
+
+void testCommandBuffer() {
+    __metal_command_buffer_t commandBuffer;
+    __metal_compute_pipeline_state_t computePipelineState;
+
+    __metal_get_size_command_buffer(commandBuffer);
+
+    __metal_set_pipeline_state_compute_command(commandBuffer, 0, computePipelineState);
+
+    __metal_set_kernel_buffer_compute_command(commandBuffer, 0, (device void*)nullptr, 0, 0);
+
+    __metal_concurrent_dispatch_threadgroups_compute_command(commandBuffer, 0, uint3(0), uint3(0));
+
+    __metal_concurrent_dispatch_threads_compute_command(commandBuffer, 0, uint3(0), uint3(0));
+
+    __metal_set_barrier_compute_command(commandBuffer, 0);
+
+    __metal_clear_barrier_compute_command(commandBuffer, 0);
+}
