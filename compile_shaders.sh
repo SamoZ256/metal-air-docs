@@ -10,4 +10,18 @@ function compileShader {
     compileShaderForSystem $1 "watchos"
 }
 
-compileShader "simple"
+mkdir -p shaders/macosx
+mkdir -p shaders/iphoneos
+mkdir -p shaders/appletvos
+mkdir -p shaders/watchos
+
+for file in shaders/*; do
+    if [ -d $file ]; then
+        continue
+    fi
+    if [ ${file: -6} != ".metal" ]; then
+        continue
+    fi
+    filename="$(b=${file##*/}; echo ${b%.*})"
+    compileShader $filename
+done

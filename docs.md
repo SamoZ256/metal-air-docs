@@ -1,6 +1,6 @@
 # Introduction
 
-The AIR (Apple's intermediate representation) format is nothing else than LLVM bytecode. It can be dissassemble with the `llvm-dis` tool. However, assembling the `.ll` file again with `llvm-as` will produce a slightly different bytecode which gives `LLVM ERROR: Invalid bitcode file!` when trying to bundle it into a `.metallib` file. That's because `llvm-dis` automatically adds the `memory(none)` to all functions, which is not supported (and not even needed for Metal in the first place).
+The AIR (Apple's intermediate representation) format is nothing else than LLVM bytecode. It can be dissassemble with the `llvm-dis` tool. However, assembling the `.ll` file again with `llvm-as` will produce a slightly different bytecode which gives `LLVM ERROR: Invalid bitcode file!` when trying to bundle it into a `.metallib` file. That's because `llvm-dis` automatically adds the `memory(none)` to all functions, but Metal uses LLVM 4.0 which didn't have the attribute yet.
 
 ## Example
 
@@ -110,7 +110,7 @@ attributes #1 = { mustprogress nofree norecurse nosync nounwind willreturn memor
 
 This document will go over 3 main parts of the shader code:
 1. The header
-2. The code
+2. The body
 3. The metadata
 
 ## The header
@@ -125,3 +125,7 @@ The header header is rather simple. It contains the following information:
   | iosXX.XX.XX | iOS version XX.XX.XX |
   | tvosXX.XX.XX | tvOS version XX.XX.XX |
   | watchosXX.XX.XX | watchOS version XX.XX.XX |
+
+## The body
+
+The body is the main part of the shader. It contains the actual shader code. It uses LLVM 4.0.
