@@ -312,7 +312,7 @@ TODO: write about void vertex functions
 | Output type | - | all [builtins](#builtin_vertex_outputs), `air.vertex_output` | Specifies whether the output is builtin (and which builtin) or user defined. | yes |
 | Is invariant | `0` is `air.position` | `air.invariant` | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
 | User output identifier | `Output type` is `air.vertex_output` | any `str` (TODO: can this really be anything?) | The string used to match the vertex output with the corresponding fragment input. | yes |
-| Is shared | - | 'air.shared' | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
+| Is shared | - | `air.shared` | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
 | Clip distance array size (`air.clip_distance_array_size`) | `Output type` is `air.clip_distance` and the data type is `float[N]` | any `i32` | Specifies the size of the clip distance array. | yes |
 
 <a name="builtin_vertex_outputs"></a>
@@ -366,7 +366,7 @@ Table for builtin fragment inputs:
 | Argument | Valid types | Possible values | Description | Mandatory |
 | -------- | ----------- | --------------- | ----------- | --------- |
 | `air.render_target` | any | any `i32` | Specifies the index of the color attachment to match with color attachment of render pipeline state in the Metal API. | yes |
-| `1` | any | seems to always be 0 (TODO: check this) | ? | ? |
+| ? | any | seems to always be 0 (TODO: check this) | ? | ? |
 
 <a name="kernel_functions"></a>
 #### Kernel functions
