@@ -267,8 +267,8 @@ Each input and output can have both regular and named arguments. Regular argumen
 
 | Argument name | Valid types | Possible values | Description | Mandatory |
 | ------------- | ----------- | --------------- | ----------- | --------- |
-| Type name (`air.arg_type_name`) | any | any `i32` | The name of the type of the argument. | no (debug) |
-| Argument name (`air.arg_name`) | any | any `i32` | The name of the argument. | no (debug) |
+| Type name (`air.arg_type_name`) | any | any `str` | The name of the type of the argument. | no (debug) |
+| Argument name (`air.arg_name`) | any | any `str` | The name of the argument. | no (debug) |
 
 TODO: format this nicely
 Note: The `Valid types` column refers to the data types that the input/output can have. The `Mandatory` column specifies whether the argument must be present (if `Conditions` are met or not present).
