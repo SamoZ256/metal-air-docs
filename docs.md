@@ -259,19 +259,23 @@ TODO
 
 The entry points are the functions that are called by the Metal API. In the context of the AIR metadata, an entry point is an array containing the following information:
 - The function pointer to be called by the Metal API.
-- An array of outputs (except for `kernel` entry points) - stage-specific
-- An array of inputs - These contain the stage-specific inputs as well as the general inputs that are described [below](#general_inputs).
+- (optional) An array of outputs (except for `kernel` entry points) - stage-specific
+- (optional) An array of inputs - These contain the stage-specific inputs as well as the general inputs that are described [below](#general_inputs).
+- (optional) An array of attributes - These contain the stage-specific attributes (for instance patch type and control point count in case of post-tesselation vertex function). See the [attributes] section of the corresponding stage.
 
-Each input and output can have both positional and named arguments. Positional arguments always go before named arguments. Named arguments are specified as 2 arguments with the first one being the name of the argument and the second one being the value of the argument. Each argument can have the following 2 named arguments:
+Each input and output can have both positional and named arguments. Positional arguments and named arguments can interleave (TODO: check this). Named arguments are specified as 2 arguments with the first one being the name of the argument and the second one being the value of the argument. Each argument can have the following 2 named arguments:
 
-| Argument | Type | Possible values | Description | Mandatory |
-| -------- | ---- | --------------- | ----------- | --------- |
-| `air.arg_type_name` | `str` | any | The name of the type of the argument. | no (debug) |
-| `air.arg_name` | `str` | any | The name of the argument. | no (debug) |
+| Argument | Valid types | Possible values | Description | Mandatory |
+| -------- | ----------- | --------------- | ----------- | --------- |
+| `air.arg_type_name` | any | any | The name of the type of the argument. | no (debug) |
+| `air.arg_name` | any | any | The name of the argument. | no (debug) |
+
+TODO: format this nicely
+Note: The `Valid types` column refers to the types that the argument can have.
 
 Additionally, every input must have the following positional arguments:
-| Argument | Type | Possible values | Description | Mandatory |
-| -------- | ---- | --------------- | ----------- | --------- |
+| Argument | Valid types | Possible values | Description | Mandatory |
+| -------- | ----------- | --------------- | ----------- | --------- |
 | `0` | `i32` | any | The index of the input in the function signature. | yes |
 
 Since the 0th positional argument is mandatory for every input, it won't be mentioned in this document more.
@@ -288,14 +292,28 @@ TODO
 
 TODO: write about void vertex functions
 
+##### Attributes
+| Argument | Possible values | Description | Mandatory |
+| -------- | --------------- | ----------- | --------- |
+| `air.patch` | `triangle`, `quad` | The type of the patch. | yes |
+| `air.control_point_count` | `<0..32>` | The number of control points in the patch. | no |
+
 ##### Inputs
-TODO
+| Argument | Valid types | Possible values | Description | Mandatory |
+| -------- | ----------- | --------------- | ----------- | --------- |
+| `1` (if `air.patch` attribute not specified) | `ushort`, `uint` | `air.amplification_count`, `air.amplification_id`, `air.base_instance`, `air.base_vertex`, `air.instance_id`, `air.vertex_id`, `air.vertex_input`,  | Specifies wether the input is builtin (and which builtin) or user defined. | yes |
+| `1` (if `air.patch` attribute specified) | (`ushort`, `uint` if `air.base_instance`, `air.instance_id` or `air.patch_id`), (`float3` if `air.position_in_patch` and patch type is `triangle`, otherwise `float2`) | `air.base_instance`, `air.instance_id`, `air.patch_id`, `air.position_in_patch`,  | Specifies wether the input is builtin (and which builtin) or user defined. | yes |
+| `air.location_index` (if `1` is `air.vertex_input`) | any | any `i32` | The location index of the vertex input used to match with vertex inputs specified using vertex descriptor in the Metal API. | yes |
+| `2` | any | seems to always be 1 (TODO: check this) | ? | ? |
 
 ##### Outputs
-| Argument | Type | Possible values | Description | Mandatory |
-| -------- | ---- | --------------- | ----------- | --------- |
-| `0` | `str` | `air.position`, `air.vertex_output` | Indicates wether the output is builtin position or user defined. | yes |
-| `1` | `str` | any (TODO: can this really be anything?) | The string used to match the vertex output with the corresponding fragment input. | yes (but forbidden in case argument `0` is `air.position`) |
+| Argument | Valid types | Possible values | Description | Mandatory |
+| -------- | ----------- | --------------- | ----------- | --------- |
+| `0` | (`float4` if `air.position`), (`float`, `float[N]` if `air.clip_distance`), (`float` if `air.point_size`), otherwise any | `air.position`, `air.clip_distance`, `air.point_size`, `air.vertex_output` | Specifies wether the output is builtin (and which builtin) or user defined. | yes |
+| `1` (if `0` is `air.position`) | `float4` | `air.invariant` | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
+| `1` (if `0` is `air.vertex_output`) | any | any `str` (TODO: can this really be anything?) | The string used to match the vertex output with the corresponding fragment input. | yes |
+| `2` | any | 'air.shared' | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
+| `air.clip_distance_array_size` (if `0` is `air.clip_distance`) | `float`, `float[N]` | any `i32` | Specifies the size of the clip distance array. If not present, the output must not have an array type. | no |
 
 <a name="fragment_functions"></a>
 #### Fragment functions
