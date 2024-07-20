@@ -307,18 +307,39 @@ TODO: write about void vertex functions
 | `2` | any | seems to always be 1 (TODO: check this) | ? | ? |
 
 ##### Outputs
-| Argument | Valid types | Possible values | Description | Mandatory |
-| -------- | ----------- | --------------- | ----------- | --------- |
-| `0` | (`float4` if `air.position`), (`float`, `float[N]` if `air.clip_distance`), (`float` if `air.point_size`), otherwise any | `air.position`, `air.clip_distance`, `air.point_size`, `air.vertex_output` | Specifies wether the output is builtin (and which builtin) or user defined. | yes |
-| `1` (if `0` is `air.position`) | `float4` | `air.invariant` | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
-| `1` (if `0` is `air.vertex_output`) | any | any `str` (TODO: can this really be anything?) | The string used to match the vertex output with the corresponding fragment input. | yes |
-| `2` | any | 'air.shared' | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
-| `air.clip_distance_array_size` (if `0` is `air.clip_distance`) | `float`, `float[N]` | any `i32` | Specifies the size of the clip distance array. If not present, the output must not have an array type. | no |
+| Argument | Possible values | Description | Mandatory |
+| -------- | --------------- | ----------- | --------- |
+| `0` | `air.position`, `air.clip_distance`, `air.point_size`, `air.render_target_array_index`, `air.viewport_array_index`, `air.vertex_output` | Specifies wether the output is builtin (and which builtin) or user defined. | yes |
+| `1` (if `0` is `air.position`)| `air.invariant` | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
+| `1` (if `0` is `air.vertex_output`) | any `str` (TODO: can this really be anything?) | The string used to match the vertex output with the corresponding fragment input. | yes |
+| `2` | 'air.shared' | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
+| `air.clip_distance_array_size` (if `0` is `air.clip_distance`) | any `i32` | Specifies the size of the clip distance array. If not present, the output must not have an array type. | no |
+
+Table for builtin vertex outputs:
+| Argument | Valid types | Description |
+| -------- | ----------- | ----------- |
+| `air.position` | `float4` | The position of the vertex in clip space. |
+| `air.clip_distance` | `float`, `float[N]` | TODO |
+| `air.point_size` | `float` | TODO |
+| `air.render_target_array_index` | `uchar`, `ushort`, `uint` | The index of a face of a cubemap, a slice of a 3D texture, or a slice of an array. |
+| `air.viewport_array_index` | `uchar`, `ushort`, `uint` | The viewport and scissor index. |
 
 <a name="fragment_functions"></a>
 #### Fragment functions
 
 TODO
+
+#### Attributes
+TODO
+
+#### Inputs
+TODO
+
+#### Outputs
+| Argument | Valid types | Possible values | Description | Mandatory |
+| -------- | ----------- | --------------- | ----------- | --------- |
+| `air.render_target` | any | any `i32` | Specifies the index of the color attachment to match with color attachment of render pipeline state. | yes |
+| `1` | any | seems to always be 0 (TODO: check this) | ? | ? |
 
 <a name="kernel_functions"></a>
 #### Kernel functions
