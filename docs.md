@@ -263,20 +263,20 @@ The entry points are the functions that are called by the Metal API. In the cont
 - (optional) An array of inputs - These contain the stage-specific inputs as well as the general inputs that are described [below](#general_inputs).
 - (optional) An array of attributes - These contain the stage-specific attributes (for instance patch type and control point count in case of post-tesselation vertex function). See the [attributes] section of the corresponding stage.
 
-Each input and output can have both positional and named arguments. Positional arguments and named arguments can interleave (TODO: check this). Named arguments are specified as 2 arguments with the first one being the name of the argument and the second one being the value of the argument. Each argument can have the following 2 named arguments:
+Each input and output can have both regular and named arguments. Regular arguments and named arguments can interleave, and the order of the arguments does not matter (TODO: check this). Named arguments are specified as 2 arguments with the first one being the name of the argument and the second one being the value of the argument. Each argument can have the following 2 named arguments:
 
-| Argument | Valid types | Possible values | Description | Mandatory |
-| -------- | ----------- | --------------- | ----------- | --------- |
-| `air.arg_type_name` | any | any | The name of the type of the argument. | no (debug) |
-| `air.arg_name` | any | any | The name of the argument. | no (debug) |
+| Argument name | Valid types | Possible values | Description | Mandatory |
+| ------------- | ----------- | --------------- | ----------- | --------- |
+| Type name (`air.arg_type_name`) | any | any | The name of the type of the argument. | no (debug) |
+| Argument name (`air.arg_name`) | any | any | The name of the argument. | no (debug) |
 
 TODO: format this nicely
-Note: The `Valid types` column refers to the types that the argument can have.
+Note: The `Valid types` column refers to the types that the argument can have. The `Mandatory` column specifies whether the argument must be present (if `Conditions` are met or not present).
 
 Additionally, every input must have the following positional arguments:
 | Argument | Valid types | Possible values | Description | Mandatory |
 | -------- | ----------- | --------------- | ----------- | --------- |
-| `0` | `i32` | any | The index of the input in the function signature. | yes |
+| Argument index (required to appear as first in the argument array) | any | any `i32` | The index of the input in the function signature. | yes |
 
 Since the 0th positional argument is mandatory for every input, it won't be mentioned in this document more.
 
@@ -295,29 +295,30 @@ TODO: write about void vertex functions
 ##### Attributes
 | Argument | Possible values | Description | Mandatory |
 | -------- | --------------- | ----------- | --------- |
-| `air.patch` | `triangle`, `quad` | The type of the patch. | yes |
-| `air.control_point_count` | `<0..32>` | The number of control points in the patch. | no |
+| Patch type (`air.patch`) | `triangle`, `quad` | The type of the patch. | yes |
+| Control point count (`air.control_point_count`) | `<0..32>` | The number of control points in the patch. | no |
 
 ##### Inputs
-| Argument | Valid types | Possible values | Description | Mandatory |
-| -------- | ----------- | --------------- | ----------- | --------- |
-| `1` (if `air.patch` attribute not specified) | `ushort`, `uint` | `air.amplification_count`, `air.amplification_id`, `air.base_instance`, `air.base_vertex`, `air.instance_id`, `air.vertex_id`, `air.vertex_input`,  | Specifies wether the input is builtin (and which builtin) or user defined. | yes |
-| `1` (if `air.patch` attribute specified) | (`ushort`, `uint` if `air.base_instance`, `air.instance_id` or `air.patch_id`), (`float3` if `air.position_in_patch` and patch type is `triangle`, otherwise `float2`) | `air.base_instance`, `air.instance_id`, `air.patch_id`, `air.position_in_patch`,  | Specifies wether the input is builtin (and which builtin) or user defined. | yes |
-| `air.location_index` (if `1` is `air.vertex_input`) | any | any `i32` | The location index of the vertex input used to match with vertex inputs specified using vertex descriptor in the Metal API. | yes |
-| `2` | any | seems to always be 1 (TODO: check this) | ? | ? |
+| Argument | Condition | Valid types | Possible values | Description | Mandatory |
+| -------- | --------- | ----------- | --------------- | ----------- | --------- |
+| Input type | `Patch type` attribute not specified | `ushort`, `uint` | `air.amplification_count`, `air.amplification_id`, `air.base_instance`, `air.base_vertex`, `air.instance_id`, `air.vertex_id`, `air.vertex_input`,  | Specifies whether the input is builtin (and which builtin) or user defined. | yes |
+| | `Patch type` attribute specified | (`ushort`, `uint` if `air.base_instance`, `air.instance_id` or `air.patch_id`), (`float3` if `air.position_in_patch` and patch type is `triangle`, otherwise `float2`) | `air.base_instance`, `air.instance_id`, `air.patch_id`, `air.position_in_patch`,  | Specifies whether the input is builtin (and which builtin) or user defined. | yes |
+| Location index (`air.location_index`) | `Input type` is `air.vertex_input` | any | any `i32` | The location index of the vertex input used to match with vertex inputs specified using vertex descriptor in the Metal API. | yes |
+| ? | `Input type` is `air.vertex_input` | any | seems to always be 1 (TODO: check this) | ? | ? |
 
 ##### Outputs
-| Argument | Possible values | Description | Mandatory |
-| -------- | --------------- | ----------- | --------- |
-| `0` | `air.position`, `air.clip_distance`, `air.point_size`, `air.render_target_array_index`, `air.viewport_array_index`, `air.vertex_output` | Specifies wether the output is builtin (and which builtin) or user defined. | yes |
-| `1` (if `0` is `air.position`)| `air.invariant` | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
-| `1` (if `0` is `air.vertex_output`) | any `str` (TODO: can this really be anything?) | The string used to match the vertex output with the corresponding fragment input. | yes |
-| `2` | 'air.shared' | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
-| `air.clip_distance_array_size` (if `0` is `air.clip_distance`) | any `i32` | Specifies the size of the clip distance array. If not present, the output must not have an array type. | no |
+| Argument | Condition | Possible values | Description | Mandatory |
+| -------- | --------- | --------------- | ----------- | --------- |
+| Output type | - | all [builtins](#builtin_vertex_outputs), `air.vertex_output` | Specifies whether the output is builtin (and which builtin) or user defined. | yes |
+| Is invariant | `0` is `air.position` | `air.invariant` | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
+| User output identifier | `Output type` is `air.vertex_output` | any `str` (TODO: can this really be anything?) | The string used to match the vertex output with the corresponding fragment input. | yes |
+| Is shared | - | 'air.shared' | If specified, the output is assumed to be the same for every vertex in a draw call. | no |
+| Clip distance array size (`air.clip_distance_array_size`) | `Output type` is `air.clip_distance` and the data type is `float[N]` | any `i32` | Specifies the size of the clip distance array. | yes |
 
+<a name="builtin_vertex_outputs"></a>
 Table for builtin vertex outputs:
-| Argument | Valid types | Description |
-| -------- | ----------- | ----------- |
+| Builtin | Valid types | Description |
+| ------- | ----------- | ----------- |
 | `air.position` | `float4` | The position of the vertex in clip space. |
 | `air.clip_distance` | `float`, `float[N]` | TODO |
 | `air.point_size` | `float` | TODO |
@@ -333,12 +334,38 @@ TODO
 TODO
 
 #### Inputs
-TODO
+| Argument | Condition | Possible values | Description | Mandatory |
+| -------- | --------- | --------------- | ----------- | --------- |
+| Input type | - | all [builtins](#builtin_fragment_inputs), `air.fragment_input` | Specifies whether the input is builtin (and which builtin) or user defined. | yes |
+| Render target index | `Input type` is `air.render_target` | `<0..8)` | The index of the color attachment to match with color attachment of render pipeline state in the Metal API. | yes |
+| Interpolation | - | `air.center`, `air.centroid`, `air.sample`, `air.flat` | Specifies the interpolation mode for the input. If `Input type` is `air.position`, must be `air.center`. If the data type is an integer, must be `air.flat`. | no |
+| Perspective | `Interpolation` specified and is not `air.flat` | `air.perspective`, `air.no_perspective` | If `air.perspective`, the input is interpolated in a perspective-correct manner. Otherwise, the input is interpolated in screen coordinates. | yes |
+
+TODO: document `sample_mask, post_depth_coverage`
+<a name="builtin_fragment_inputs"></a>
+Table for builtin fragment inputs:
+| Builtin | Valid types | Description |
+| ------- | ----------- | ----------- |
+| `air.position` | `float4` | The position of the vertex in window-relative coordinate as `(x, y, z, 1 / w)`. |
+| `air.amplification_count` | `ushort`, `uint` | The number of output vertices produced by the vertex shader for every input vertex. |
+| `air.amplification_id` | `ushort`, `uint` | The index of the output vertex produced by the vertex shader for every input vertex in the range of `<0..Aplification count)`. |
+| `air.barycentric_coord` | `float`, `float2`, `float3` | The barycentric coordinates of the fragment. |
+| `air.render_target` | any | The previous fragment data stored in the tile memory at the same location. |
+| `air.front_facing` | `bool` | Specifies whether the fragment is front facing according to primitive winding specified in the Metal API or not. |
+| `air.point_coord` | TODO | TODO |
+| `air.primitive_id` | `ushort`, `uint` | A per-rpimitive identifier. |
+| `air.render_target_array_index` | `uchar`, `ushort`, `uint` | Same as the value written in the vertex shader. |
+| `air.sample_id` | `uint` | The index of the sample in the pixel. `0` when not using multisampling. |
+| `air.sample_mask_in` | `uint` | TODO |
+| `air.thread_index_in_quadgroup` | `ushort`, `uint` | The index of the thread in the quad group. |
+| `air.thread_index_in_simdgroup` | `ushort`, `uint` | The index of the thread in the SIMD group. |
+| `air.threads_per_simdgroup` | `ushort`, `uint` | The number of threads in the SIMD group. |
+| `air.viewport_array_index` | `uint` | Same as the value written in the vertex shader. |
 
 #### Outputs
 | Argument | Valid types | Possible values | Description | Mandatory |
 | -------- | ----------- | --------------- | ----------- | --------- |
-| `air.render_target` | any | any `i32` | Specifies the index of the color attachment to match with color attachment of render pipeline state. | yes |
+| `air.render_target` | any | any `i32` | Specifies the index of the color attachment to match with color attachment of render pipeline state in the Metal API. | yes |
 | `1` | any | seems to always be 0 (TODO: check this) | ? | ? |
 
 <a name="kernel_functions"></a>

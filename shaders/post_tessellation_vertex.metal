@@ -16,8 +16,5 @@ struct VertexOut {
 
 [[vertex, patch(triangle, 8)]]
 VertexOut vertexMain(VertexIn in [[stage_in]], uint b_instance [[base_instance]], uint iid [[instance_id]], ushort pid [[patch_id]], float3 pos_in_patch [[position_in_patch]]) {
-    VertexOut out;
-    out.position = in.position;
-
-    return out;
+    return {};
 }

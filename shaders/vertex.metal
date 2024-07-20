@@ -19,6 +19,12 @@ struct VertexOut {
 };
 
 [[vertex]]
-VertexOut vertexMain(VertexIn in [[stage_in]], uint a_count [[amplification_count]], uint aid [[amplification_id]], uint b_instance [[base_instance]], uint b_vertex [[base_vertex]], uint iid [[instance_id]], uint vid [[vertex_id]]) {
+VertexOut vertexMain(VertexIn in [[stage_in]],
+                     uint a_count [[amplification_count]],
+                     uint aid [[amplification_id]],
+                     uint b_instance [[base_instance]],
+                     uint b_vertex [[base_vertex]],
+                     uint iid [[instance_id]],
+                     uint vid [[vertex_id]]) {
     return {};
 }
