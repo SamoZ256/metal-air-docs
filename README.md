@@ -1,10 +1,10 @@
 # Metal AIR documentation
 
-This project aims to reverse engineer the Apple Intermediate Representation used by the Metal graphics API. Under the hood, AIR is just LLVM 4.0 bytecode. However, it also includes a whole standard library with functions useful for writing shaders as well as a metadata section which includes all the information that the Metal graphics API needs to compile it to a native GPU binary.
+This project aims to reverse engineer the Apple Intermediate Representation (AIR) used by the Metal graphics API. Under the hood, AIR is just LLVM 4.0 bytecode. However, it also includes a whole standard library with functions useful for writing shaders as well as a metadata section which includes all the information that the Metal graphics API needs to compile it to a native GPU binary.
 
 ## Example
 
-Let's take a look at a very simple Metal shading language example:
+Here is a simple shader written in the Metal Shading Language:
 
 ```c++
 #include <metal_stdlib>
@@ -107,3 +107,5 @@ attributes #1 = { mustprogress nofree norecurse nosync nounwind willreturn memor
 !29 = !{!"omnipotent char", !30, i64 0}
 !30 = !{!"Simple C++ TBAA"}
 ```
+
+As you can see, there is a lot to cover. Check out `docs.md` for the documentation.
